@@ -1,44 +1,35 @@
 package fr.iutlan.tp4.feu3.controller
 
-
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import fr.iutlan.tp4.feu3.state.Feu3State
 
-
 class Feu3ViewModel : ViewModel() {
-// singleton contenant l
 
-
+    // Singleton containing the state, observable but private
     private val _state = mutableStateOf(Feu3State())
-// getter pour consulter cet état à l
 
-
-
+    // Getter to access this state outside this class, but private setter
     var state
-        get() = _state.value // _state.value = instance de Feu3State
-        private set(newstate) {
-            _state.value = newstate // remplace l
-
-
-
+        get() = _state.value // _state.value = instance of Feu3State
+        private set(newState) {
+            _state.value = newState // replace the state with the new one
         }
+
     init {
         reset()
     }
-    /// méthodes pour modifier les données
+
+    // Methods to modify the data
     fun reset() {
         state = Feu3State()
     }
+
     fun suivant() {
-        state = with (state) {
-            if (rouge) {
-                Feu3State(false, false, true)
-            } else if (vert) {
-                Feu3State(false, true, false)
-            } else {
-                Feu3State(true, false, false)
-            }
+        state = when {
+            state.rouge -> Feu3State(rouge = false, orange = false, vert = true)
+            state.vert -> Feu3State(rouge = false, orange = true, vert = false)
+            else -> Feu3State(rouge = true, orange = false, vert = false)
         }
     }
 }
